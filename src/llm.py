@@ -30,4 +30,5 @@ async def answer_message(user_id: int, message: str) -> str | None:
 
 
 def clear_dialog(user_id: int) -> None:
-    del CONVERSATIONS[user_id]
+    if user_id in CONVERSATIONS:
+        del CONVERSATIONS[user_id]
