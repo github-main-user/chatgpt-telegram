@@ -1,10 +1,10 @@
 from collections import defaultdict
 
-from openai import OpenAI
+from openai import AsyncOpenAI
 
 from .config import settings
 
-client = OpenAI(
+client = AsyncOpenAI(
     api_key=settings.OPENROUTER_API_KEY,
     base_url="https://openrouter.ai/api/v1",
 )
@@ -13,10 +13,10 @@ client = OpenAI(
 CONVERSATIONS = defaultdict(list)
 
 
-def answer_message(user_id: int, message: str) -> str | None:
+async def answer_message(user_id: int, message: str) -> str | None:
     CONVERSATIONS[user_id].append({"role": "user", "content": message})
 
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model="openai/gpt-oss-20b:free",
         messages=CONVERSATIONS[user_id],
         stream=False,
@@ -27,3 +27,7 @@ def answer_message(user_id: int, message: str) -> str | None:
     CONVERSATIONS[user_id].append({"role": "assistant", "content": reply})
 
     return reply
+
+
+def clear_dialog(user_id: int) -> None:
+    del CONVERSATIONS[user_id]
