@@ -13,7 +13,11 @@ keyboard = ReplyKeyboardMarkup(
 @router.message(Command("start"))
 async def cmd_start(message: Message):
     clear_dialog(message.from_user.id)  # type: ignore
-    await message.answer("UwU", reply_markup=keyboard)
+    await message.answer(
+        "Привет! Я бот, который может генерировать текст с помощью ChatGPT. Просто отправь мне сообщение, и я отвечу. "
+        "Чтобы начать новый диалог и сбросить контекст, нажми кнопку 'Новый запрос'.",
+        reply_markup=keyboard,
+    )
 
 
 @router.message(F.text == "Новый запрос")
@@ -24,7 +28,12 @@ async def cmd_clear_dialog(message: Message):
 
 @router.message(Command("help"))
 async def cmd_help(message: Message):
-    await message.answer("UwU")
+    await message.answer(
+        "Я телеграм-бот, интегрированный с ChatGPT. Отправь мне любое текстовое сообщение, и я сгенерирую ответ. "
+        "Я сохраняю историю диалогов, чтобы давать более качественные ответы. "
+        "Используй кнопку 'Новый запрос' или команду /start, чтобы сбросить контекст.",
+        reply_markup=keyboard,
+    )
 
 
 @router.message()
